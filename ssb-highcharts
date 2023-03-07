@@ -1,0 +1,186 @@
+<!-- https://nesa.no/ssb/konj/pii.html -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>SSB PxWebApi - POST + JSON-stat/Highcharts eksempel</title>
+
+		<!-- 1. Add these JavaScript inclusions in the head of your page  -->
+		<!-- json-stat.js - JSON-stat Javascript Toolkit (JJT) -->
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jsonstat@0.13.3/json-stat.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+		<script type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-dateFormat/1.0/jquery.dateFormat.min.js"></script>
+	</head>
+
+	<body>
+		<script type="text/javascript">
+
+		/* Post url for query + language parameter and TableID */
+
+			tabid = "07095";
+		  	lang = "no";
+		  	url="https://data.ssb.no/api/v0/" + lang + "/table/" + tabid;
+
+			query=
+		  /* Api spørring - kode kan f.eks. tas fra Konsoll */
+
+		  {
+		    "query": [
+		      {
+		        "code": "PKoder",
+		        "selection": {
+		          "filter": "vs:PKoder",
+		          "values": [
+		            "P105"
+		          ]
+		        }
+		      },
+		      {
+		        "code": "ContentsCode",
+		        "selection": {
+		          "filter": "item",
+		          "values": [
+		            "Sesongjustert",
+		            "Trendserie"
+		          ]
+		        }
+		      },
+		      {
+		        "code": "Tid",
+		        "selection": {
+		          "filter": "all",
+		          "values": [
+		            "201*", "202*"
+		          ]
+		        }
+		      }
+		    ],
+		    "response": {
+		      "format": "json-stat2"
+		    }
+		  }
+			/* slutt API-spørring */
+;
+
+		function main(obj){
+       		ds = JSONstat(obj).Dataset(0);
+       		/* Set some useful variables */
+       		/* find time variabel - role time*/
+			tid = ds.Dimension({role: "time"})[0];
+			/* set timespan: from and to */
+			from_to = ": " + tid.id[0] + "-" + tid.id[tid.length-1];
+			/* finnd contents code - role metric*/
+			metric = ds.Dimension(ds.role.metric[0]);
+			innhold= metric.Category();
+			/*language dependent source*/
+			source = (lang == "no") ? "Kilde: SSB, tabell: " : "Source: Statistics Norway, StatBank table: ";
+			tablebaseurl = (lang == "no") ? "https://www.ssb.no/statbank/table/" : "https://www.ssb.no/en/statbank/table/";
+			/* convert Z/GMT to norwegian summer/winter time using jquery-dateFormat */
+			lokaltid = $.format.date(new Date(ds.updated), 'yyyy-MM-dd HH:mm:ss');
+			/* try to extract short title if dot is found*/
+			korttit = innhold[0].label.match(/.*?\./);
+
+			/* set title tag based on short title */
+			$(document).prop('title', korttit);
+
+    	/*jQuery check */
+    		$(document).ready(function() {
+			/* Highcharts code */
+			    $('#container').highcharts({
+
+			        chart: {
+			        	type: 'line'
+			        },
+
+			        credits: {
+			                text: source + ds.label,
+			                href: tablebaseurl + tabid,
+			                position: {
+			                            align: 'left',
+			                            x: 25
+			                        },
+	                        style: {
+	                        		'color': 'blue',
+	                        		'fontSize': '12px'
+	                        	}
+			            },
+
+
+			        colors: ['#1a9d49', '#274247'],
+
+			      	title: {
+						text: ds.Dimension("ContentsCode").Category("Sesongjustert").label  + " og " + ds.Dimension("ContentsCode").Category("Trendserie").label + ": " + ds.Dimension("PKoder").Category("P105").label + from_to
+					},
+
+					subtitle: {text: "Oppdatert " + lokaltid},
+
+					xAxis: [
+						{
+							title: {
+								text: tid.label
+								},
+							categories: tid.id,
+							tickInterval: 12,
+							tickWidth: 1,
+							tickmarkPlacement: 'on',
+							tickPosition: 'inside'
+						}
+					],
+
+					yAxis: [
+						{
+								title: {
+								text: innhold[0].unit.base
+							}
+						}
+					],
+
+					series:[
+					{
+					marker: {
+	                          radius: 3
+	                        },
+
+	                  name: ds.Dimension("ContentsCode").Category("Sesongjustert").label,
+	                  data: ds.Data({"ContentsCode":"Sesongjustert"}, false)
+              		},
+ 					{
+	                  name: ds.Dimension("ContentsCode").Category("Trendserie").label,
+	                  data: ds.Data({"ContentsCode":"Trendserie"}, false),
+	                  marker: {
+	                            radius: 2
+	                             }
+              		}
+              		]
+			    });
+			}
+			/* End Highcharts code */
+		);
+	}
+
+/* POST using jquery */
+	  $.post({
+      url: url,
+      data: JSON.stringify(query),
+      success: main
+    });
+
+/* function to POST a query towards and url, without jquery */
+/*    POST(url, query, main);
+
+    function POST(url, query, main){
+      fetch( url, { method: "post", body: JSON.stringify(query) } )
+        .then(function(resp) {
+          resp.json().then(main);
+        })
+      ;
+    } */
+	</script>
+
+
+		<!-- 3. Add the container -->
+	<div id="container" style=" margin: 0 auto"></div>
+	<p>SSBs API mot Statistikkbanken - http POST spørring med JSON-stat,  Highcharts eksempel<br />Bruk "Vis kilde" og konsoll: F12</p>
+	</body>
+</html>
