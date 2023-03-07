@@ -22,5 +22,5 @@ export default async function handler(
     el.push(a)
     el.unshift(b)
   });
-  res.send(table)
+  res.json(table)
 }
