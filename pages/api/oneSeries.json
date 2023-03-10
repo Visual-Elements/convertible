@@ -1,0 +1,102 @@
+{
+    "dataset": {
+        "dimension": {
+            "NACE2007": {
+                "label": "næring (SN2007)",
+                "category": {
+                    "index": {
+                        "01-96": 0
+                    },
+                    "label": {
+                        "01-96": "Alle næringar"
+                    }
+                },
+                "link": {
+                    "describedby": [{
+                        "extension": {
+                            "NACE2007": "urn:ssb:classification:klass:6"
+                        }
+                    }]
+                },
+                "extension": {
+                    "show": "code_value"
+                }
+            },
+            "Tid": {
+                "label": "år",
+                "category": {
+                    "index": {
+                        "2010": 0,
+                        "2011": 1,
+                        "2012": 2,
+                        "2013": 3,
+                        "2014": 4,
+                        "2015": 5,
+                        "2016": 6,
+                        "2017": 7,
+                        "2018": 8,
+                        "2019": 9,
+                        "2020": 10,
+                        "2021": 11,
+                        "2022": 12
+                    },
+                    "label": {
+                        "2010": "2010",
+                        "2011": "2011",
+                        "2012": "2012",
+                        "2013": "2013",
+                        "2014": "2014",
+                        "2015": "2015",
+                        "2016": "2016",
+                        "2017": "2017",
+                        "2018": "2018",
+                        "2019": "2019",
+                        "2020": "2020",
+                        "2021": "2021",
+                        "2022": "2022"
+                    }
+                },
+                "extension": {
+                    "show": "code"
+                }
+            },
+            "ContentsCode": {
+                "label": "statistikkvariabel",
+                "category": {
+                    "index": {
+                        "LedigeStillinger": 0
+                    },
+                    "label": {
+                        "LedigeStillinger": "Ledige stillingar"
+                    },
+                    "unit": {
+                        "LedigeStillinger": {
+                            "base": "stillingar",
+                            "decimals": 0
+                        }
+                    }
+                },
+                "extension": {
+                    "show": "value"
+                }
+            },
+            "id": ["NACE2007", "Tid", "ContentsCode"],
+            "size": [1, 13, 1],
+            "role": {
+                "time": ["Tid"],
+                "metric": ["ContentsCode"]
+            }
+        },
+        "label": "08836: Ledige stillingar, etter næring (SN2007), år og statistikkvariabel",
+        "source": "Statistisk sentralbyrå",
+        "updated": "2023-02-09T07:00:00Z",
+        "value": [62100, 69400, 65000, 63000, 58600, 54400, 53100, 59600, 67900, 72500, 62700, 88800, 106800],
+        "extension": {
+            "px": {
+                "infofile": "None",
+                "tableid": "08836",
+                "decimals": 0
+            }
+        }
+    }
+}
