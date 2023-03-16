@@ -18,10 +18,8 @@ export default async function handler(
 ) {
 
   
-  const stat = (await JSONstat(oneSeries2)).Dataset(0) 
-  // res.setHeader('Cache-Control', 's-maxage=86400,stale-while-revalidate');
-
-  console.log(jsonColsOfJsonStat(stat))
+  const stat = (await JSONstat(req.query.url)).Dataset(0) 
+  res.setHeader('Cache-Control', 's-maxage=86400,stale-while-revalidate');
   res.status(200).json(unzip([
     getTimeSeriesData(stat),
     ...jsonColsOfJsonStat(stat)
