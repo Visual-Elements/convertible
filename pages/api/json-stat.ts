@@ -8,6 +8,7 @@ import { unzip } from 'lodash'
 
 import JSONstat from "jsonstat-toolkit";
 import oneSeries from './oneSeries.json';
+import oneSeries2 from './oneSeries2.json';
 import twoSeries from './twoSeries.json';
 import sixSeries from './sixSeries.json';
 
@@ -17,12 +18,13 @@ export default async function handler(
 ) {
 
   
-  const stat = (await JSONstat(req.query.url)).Dataset(0) 
-  res.setHeader('Cache-Control', 's-maxage=86400,stale-while-revalidate');
+  const stat = (await JSONstat(oneSeries2)).Dataset(0) 
+  // res.setHeader('Cache-Control', 's-maxage=86400,stale-while-revalidate');
 
+  console.log(jsonColsOfJsonStat(stat))
   res.status(200).json(unzip([
     getTimeSeriesData(stat),
-    ...getSecondaryDimensionData(stat)
+    ...jsonColsOfJsonStat(stat)
   ]))
 }
 
@@ -85,7 +87,7 @@ const getData = (stat, series) => {
 }
 
 // Summarize the dimensions and categories we will fetch data for
-const constructDataModel = (stat) => {
+const jsonColsOfJsonStat = (stat) => {
   const timeIndices = (stat.role?.time || [])
   .map((t) => stat.id.indexOf(t))
 
@@ -101,7 +103,7 @@ const constructDataModel = (stat) => {
   if (nonUnarySecondaryDimensions.length === 0) {
       // Pick any name
       const name = Object.values(stat.Dimension(secondaryDimensions[0]).__tree__.category.label)[0]
-      return [name].concat([stat.Data({}, false)])
+      return [[name].concat(stat.Data({}, false))]
   }
       
   const compiledData = nonUnarySecondaryDimensions
@@ -112,12 +114,5 @@ const constructDataModel = (stat) => {
             .map(([k, v]) => ({id: k, label: v}))
     }))
 
-  return compiledData
-}
-
-export function getSecondaryDimensionData(stat) {
-  return getData(
-    stat,
-    constructDataModel(stat)
-  )
+  return getData(stat, compiledData)
 }
