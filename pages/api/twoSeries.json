@@ -1,0 +1,158 @@
+{
+    "class": "dataset",
+    "label": "11418: Yrkesfordelt månedslønn, etter statistikkmål, yrke, sektor, avtalt/vanlig arbeidstid per uke, statistikkvariabel og år",
+    "source": "Statistisk sentralbyrå",
+    "updated": "2023-02-02T07:00:00Z",
+    "id": ["MaaleMetode", "Yrke", "Sektor", "AvtaltVanlig", "ContentsCode", "Tid"],
+    "size": [1, 2, 1, 1, 1, 8],
+    "dimension": {
+        "MaaleMetode": {
+            "extension": {
+                "show": "value"
+            },
+            "label": "statistikkmål",
+            "category": {
+                "index": {
+                    "02": 0
+                },
+                "label": {
+                    "02": "Gjennomsnitt"
+                }
+            }
+        },
+        "Yrke": {
+            "extension": {
+                "show": "code_value"
+            },
+            "label": "yrke",
+            "category": {
+                "index": {
+                    "0-9": 0,
+                    "1": 1
+                },
+                "label": {
+                    "0-9": "Alle yrker",
+                    "1": "Ledere"
+                }
+            },
+            "link": {
+                "describedby": [{
+                    "extension": {
+                        "Yrke": "urn:ssb:classification:klass:7"
+                    }
+                }]
+            }
+        },
+        "Sektor": {
+            "extension": {
+                "show": "value"
+            },
+            "label": "sektor",
+            "category": {
+                "index": {
+                    "A+B+D+E": 0
+                },
+                "label": {
+                    "A+B+D+E": "Privat sektor og offentlige eide foretak"
+                }
+            },
+            "link": {
+                "describedby": [{
+                    "extension": {
+                        "Sektor": "urn:ssb:classification:klass:39"
+                    }
+                }]
+            }
+        },
+        "AvtaltVanlig": {
+            "extension": {
+                "show": "value"
+            },
+            "label": "avtalt/vanlig arbeidstid per uke",
+            "category": {
+                "index": {
+                    "5": 0
+                },
+                "label": {
+                    "5": "Heltidsansatte"
+                }
+            },
+            "link": {
+                "describedby": [{
+                    "extension": {
+                        "AvtaltVanlig": "urn:ssb:classification:klass:149",
+                        "5": "urn:ssb:conceptvariable:vardok:3391"
+                    }
+                }]
+            }
+        },
+        "ContentsCode": {
+            "extension": {
+                "show": "value"
+            },
+            "label": "statistikkvariabel",
+            "category": {
+                "index": {
+                    "Manedslonn": 0
+                },
+                "label": {
+                    "Manedslonn": "Månedslønn (kr)"
+                },
+                "unit": {
+                    "Manedslonn": {
+                        "base": "kr",
+                        "decimals": 0
+                    }
+                }
+            },
+            "link": {
+                "describedby": [{
+                    "extension": {
+                        "Manedslonn": "urn:ssb:conceptvariable:vardok:187"
+                    }
+                }]
+            }
+        },
+        "Tid": {
+            "extension": {
+                "show": "code"
+            },
+            "label": "år",
+            "category": {
+                "index": {
+                    "2015": 0,
+                    "2016": 1,
+                    "2017": 2,
+                    "2018": 3,
+                    "2019": 4,
+                    "2020": 5,
+                    "2021": 6,
+                    "2022": 7
+                },
+                "label": {
+                    "2015": "2015",
+                    "2016": "2016",
+                    "2017": "2017",
+                    "2018": "2018",
+                    "2019": "2019",
+                    "2020": "2020",
+                    "2021": "2021",
+                    "2022": "2022"
+                }
+            }
+        }
+    },
+    "value": [45870, 45900, 46670, 48160, 49930, 51380, 53630, 56380, 65180, 66890, 68450, 70590, 73010, 74560, 78220, 81970],
+    "role": {
+        "time": ["Tid"],
+        "metric": ["ContentsCode"]
+    },
+    "version": "2.0",
+    "extension": {
+        "px": {
+            "infofile": "None",
+            "tableid": "11418",
+            "decimals": 0
+        }
+    }
+}
